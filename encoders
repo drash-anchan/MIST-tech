@@ -1,0 +1,73 @@
+base64
+- converts any text or code to binary code (just text conversion)
+• base64 normal.txt > coded.txt 
+   *if we cat coded.txt , we get a jumbled code
+base64 coded.txt > decoded.txt
+    *if we cat decided.txt , we get original text
+• base64 ends with =, only A-Z a-z 0-9 + /
+
+rot13 and ciphers
+• ROT13 / Caesar - Alphabetic but nonsense (their pattern)
+
+rot13
+- it's just cipher with shift of 13 digits 
+   i.e. A +13 = N
+   cat coded.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m' > decoded.txt
+  • now if we cat decoded.txt , we can see the secret text
+• To convert any text to rot13 then use
+echo 'your text here' | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+
+Caesar cipher
+- it's just any random shift 
+we use cipher brute force to check all 26 alphabets (26 possible shifts) and decode it
+• first we convert alphabet to numbers then add a number(shift) to all those numbers and we get new number, convert that new number to alphabet 
+and donee
+• for i in {1..26}; do echo "$i:"; cat coded.txt | tr "A-Za-z" "$(echo {A..Z} {a..z} | tr -d ' ' | cut -c $((i+1))-)$(echo {A..Z} {a..z} | tr -d ' ' | cut -c 1-$i)"; echo; done
+
+Vigenère cipher
+- advanced caesar cipher, it shifts based on the key
+Example: HELLO - text
+                 KEYKE - key
+      First letter: H(7) + K(10) = 17 (R)
+      So on....
+• we don't use linux terminal to decode this instead we use online decider for vigenère cipher and give both code and key, it will automatically give us decoded code
+• manual formula 
+   *first convert alphabet to numbers 
+   *then apply formula
+   *output will be in numbers
+   *again convert numbers to text
+   Plain = (Cipher - Key + 26) mod26
+  [ A=0,B=1,.....,Z=26 ]
+
+hex
+• Hex only 0-9 + a-f, pairs like 68 65 6c 6c 6
+- decode hex
+echo "626173653634" | xxd -r -p
+
+mod26
+- it is the math behind all those cipher problems
+
+See first we take the code ciphers (which are in alphabets) and convert them into numbers [ A=0,..., Z=26]
+
+Eg: now suppose W(22) , we have shift 5 then 
+ W + 5 = 27 
+
+Here we have two methods 
+(1)  A  B          Y  Z
+       0  1          25 26
+       again loop
+       27 28       (27+25)  (27+26)
+This is not best soln so we use 2nd method
+
+(2) 27 mod26 [ mod means remainder]
+      27 % 26 = 1
+And 1 = B
+So W + 5 = B
+
+Interencdec
+- it is the jumbled code where there are multiple code one inside another
+base64 -> hex -> rot13 -> plain text
+
+PicoCTF is the place where we can practise all these
+
+Linux luminarium is how to decode all of these using Linux terminal
